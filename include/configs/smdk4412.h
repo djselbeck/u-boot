@@ -302,7 +302,7 @@
 
 #define CONFIG_OF_LIBFDT	1
 
-#define CONFIG_BOOTDELAY	5
+#define CONFIG_BOOTDELAY	0
 /* Default boot commands for Android booting. */
 #if defined(CONFIG_HKDK4412) && defined(CONFIG_EXYNOS_PRIME)
     #define CONFIG_BOOTCOMMAND  \
@@ -413,7 +413,7 @@
 #define CONFIG_IDENT_STRING		" for SMDK4412"
 #endif
 
-#define CONFIG_ENABLE_MMU
+//#define CONFIG_ENABLE_MMU
 
 #ifdef CONFIG_ENABLE_MMU
 #define CONFIG_SYS_MAPPED_RAM_BASE	0xc0000000

@@ -223,7 +223,7 @@ static int bootm_start(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]
 	images.verify = getenv_yesno ("verify");
 
 	bootm_start_lmb();
-
+	printf("after bootm_start_lmb\n");
 	/* get kernel image header, start address and length */
 	os_hdr = boot_get_kernel (cmdtp, flag, argc, argv,
 			&images, &images.os.image_start, &images.os.image_len);
@@ -587,6 +587,7 @@ int do_bootm_subcommand (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv
 
 int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
+	printf("HB, do_bootm\n");
 	ulong		iflag;
 	ulong		load_end = 0;
 	int		ret;
@@ -647,6 +648,8 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 
 	/* determine if we have a sub command */
 	if (argc > 1) {
+		printf("argc: %d\n",argc);
+		printf("argv[1]:%s\n",argv[1]);
 		char *endp;
 
 		simple_strtoul(argv[1], &endp, 16);
@@ -661,16 +664,17 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		if ((*endp != 0) && (*endp != ':') && (*endp != '#'))
 			return do_bootm_subcommand(cmdtp, flag, argc, argv);
 	}
-
+	printf("before bootm_start(cmdtp,flag,argc,argv\n");
 	if (bootm_start(cmdtp, flag, argc, argv))
 		return 1;
-
+	printf("after bootm_start(cmdtp,flag,argc,argv\n");
 	/*
 	 * We have reached the point of no return: we are going to
 	 * overwrite all exception vector code, so we cannot easily
 	 * recover from any failures any more...
 	 */
 	iflag = disable_interrupts();
+	printf("Interrupts disabled\n");
 
 #if defined(CONFIG_CMD_USB)
 	/*

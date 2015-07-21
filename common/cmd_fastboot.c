@@ -1034,6 +1034,8 @@ static int rx_handler (const unsigned char *buffer, unsigned int buffer_size)
 				memcpy((void *)CFG_FASTBOOT_ADDR_KERNEL,
 					interface.transfer_buffer + CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE,
 					fb_hdr->kernel_size);
+				printf("JUMP\n");
+
 				bootm[2] = addr_ramdisk;
 				sprintf (addr_ramdisk, "0x%x", CFG_FASTBOOT_ADDR_RAMDISK);
 				memcpy((void *)CFG_FASTBOOT_ADDR_RAMDISK, interface.transfer_buffer +
@@ -1045,6 +1047,9 @@ static int rx_handler (const unsigned char *buffer, unsigned int buffer_size)
 				sprintf(response, "OKAY");
 				fastboot_tx_status(response, strlen(response), FASTBOOT_TX_SYNC);
 				udelay (1000000); /* 1 sec */
+
+				asm("b 0x40008000");
+
 
 				if (ntohl(hdr->ih_magic) == IH_MAGIC) {
 					/* Looks like a kernel.. */
